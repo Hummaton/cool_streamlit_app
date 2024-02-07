@@ -4,46 +4,57 @@ import base64
 import pandas as pd
 from matplotlib import pyplot as plt
 
-# Include CSS files
-def include_css(filename):
-    with open(filename, 'r') as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
-# Include page styling and header removal  CSS files
-include_css('.style/page_style.css')
-include_css('.style/header_remove.css')
+def main():
+    if 'data' not in st.session_state:
+        st.session_state.data = []
 
+    # Include CSS files
+    def include_css(filename):
+        with open(filename, 'r') as f:
+            st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
-# ******Body of the page*****
-# Title of the page
-title = "EcoCAR Form"
-st.markdown(f"<center><h1 style='color: white;'>{title}</h1></center>", unsafe_allow_html=True)
- 
-#name input
-col1, col2 = st.columns(2)
-col1.text_input("First Name")
-col2.text_input("Last Name") 
-
-#animal selection
-select = st.selectbox("Pick your favorite animal", options=["Select an animal", "dog", "cat", "bird", "fish", "rabbit"])
-submit_button = st.button("Submit")
-
-# dataframe logic 
-"""   TODO:
-    1. Create a dataframe with the following columns: 
-        - Name
-        - Animal
-    2. Append the data to the dataframe 
-    3. Display the dataframe on the page
-"""
+    # Include page styling and header removal  CSS files
+    # include_css('.style/page_style.css')
+    include_css('.style/header_remove.css')
 
 
-# ******Sidebar of the page*****
-with st.sidebar:
-    st.markdown("<center><h1> Graphs </h1></center>", unsafe_allow_html=True)
-    st.selectbox("", options=["Select the type of graph", "Line", "Bar", "Pie"])
+    # ******Body of the page*****
+    # Title of the page
+    title = "Nice Form"
+    st.markdown(f"<center><h1 style='color: white;'>{title}</h1></center>", unsafe_allow_html=True)
+    
 
+    # Create a form
+    with st.form(key='my_form'):
+        # Add form elements
+        col1, col2 = st.columns(2)
+        first_name = col1.text_input("First Name")
+        last_name = col2.text_input("Last Name") 
+        fav_animal = st.selectbox("Pick your favorite animal", options=["Select an animal", "dog", "cat", "bird", "fish", "rabbit"])
+        submit_button = st.form_submit_button(label='Submit')
 
+    if submit_button:
+        if fav_animal == "Select an animal" or first_name == "" or last_name == "":   #<-- If parameters not are filled 
+            st.write("Invalid input")
+        else:
+            #Adding the data to the dataframe
+            st.session_state.data.append({'First Name': first_name, 'Last Name': last_name, 'Favorite Animal': fav_animal})
+
+        dataframe = pd.DataFrame(st.session_state.data)
+
+        if not dataframe.empty:
+            st.write(dataframe)
+
+        
+
+    # ******Sidebar of the page*****
+    with st.sidebar:
+        st.markdown("<center><h1> Graphs </h1></center>", unsafe_allow_html=True)
+        st.selectbox("", options=["Select the type of graph", "Line", "Bar", "Pie"])
+
+if __name__ == "__main__":
+    main()
 
 
 
