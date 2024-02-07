@@ -12,14 +12,25 @@ def include_css(filename):
 #Display graphs onto the screen in place of all the elements
 def display_graph(option, dataframe):
     if option == "Line":
-        # st.write(dataframe)
         plt.title("Favorite Animal Count (Line Graph)")
-        
         plt.xlabel("Favorite Animal")
         plt.ylabel("Count")
-        plt.grid(True)
+        plt.grid(True)        
         plt.plot(dataframe)
         st.pyplot()
+    elif option == "Bar":
+        plt.title("Favorite Animal Count (Bar Graph)")
+        plt.xlabel("Favorite Animal")
+        plt.ylabel("Count")
+        plt.bar(dataframe.index, dataframe)
+        st.pyplot()
+    elif option == "Pie":
+        plt.title("Favorite Animal Count (Pie Chart)")
+        plt.pie(dataframe, labels=dataframe.index, autopct='%1.1f%%')
+        st.pyplot()
+        
+
+    
         
 
 def main():
