@@ -1,11 +1,7 @@
-.stDeployButton {
-    visibility: hidden;
-}   
-
-.st-emotion-cache-czk5ss.e16jpq800 {
-    visibility: hidden;
-}
-
 [data-testid="stHeader"] {
     background-color: rgba(0, 0, 0, 0.0);
+}
+
+[data-testid="stToolbar"] {
+    visibility: hidden;
 }
